@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rasofranceT - Investissement & Revenus</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        goldDark: '#AA7C11',
+                        darkBg: '#0F172A',
+                        cardBg: '#1E293B',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0F172A;
+            color: #F8FAFC;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+        .gold-border {
+            border: 1px solid #D4AF37;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+        }
+        .gold-text {
+            color: #D4AF37;
+        }
+    </style>
+</head>
+<body class="pb-24 pt-16">
+
+    <!-- Header Fixe -->
+    <header class="fixed top-0 left-0 right-0 bg-slate-900 border-b border-amber-500/30 px-4 py-3 flex justify-between items-center z-50">
+        <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-mobile-screen-button text-amber-400 text-xl"></i>
+            <span class="font-bold text-xl tracking-wider text-amber-400">rasofranceT</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <span class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-full border border-amber-500/30">
+                Solde: <strong id="balanceDisplay" class="text-white">0 FCFA</strong>
+            </span>
+            <!-- Bouton Admin Secret -->
+            <button onclick="openAdminPortal()" class="text-slate-600 hover:text-amber-400 text-xs px-1">
+                <i class="fa-solid fa-lock"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Bannière de Parrainage & Partage Direct -->
+    <div id="inviteBanner" class="mx-4 mt-2 mb-4 p-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-slate-800 border border-amber-500/40 shadow-lg space-y-2">
+        <div class="flex justify-between items-center">
+            <div>
+                <p class="text-xs text-amber-300 font-bold"><i class="fa-solid fa-users text-amber-400 mr-1"></i> Votre Lien de Parrainage</p>
+                <p class="text-[11px] text-slate-300 truncate max-w-[200px]" id="userInviteLinkDisplay">Génération en cours...</p>
+            </div>
+            <button onclick="copyInviteLink()" class="px-3 py-1.5 bg-slate-700 text-amber-300 text-xs font-bold rounded-lg border border-amber-500/30">
+                <i class="fa-solid fa-copy mr-1"></i> Copier
+            </button>
+        </div>
+        <div class="flex space-x-2 pt-1 border-t border-slate-700/60">
+            <button onclick="shareViaWhatsapp()" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg text-center shadow">
+                <i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp
+            </button>
+            <button onclick="shareViaFacebook()" class="flex-1 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg text-center shadow">
+                <i class="fa-brands fa-facebook mr-1"></i> Facebook
+            </button>
+        </div>
+    </div>
+
+    <!-- Conteneur Principal -->
+    <main class="max-w-lg mx-auto px-4">
+        
+        <!-- PAGE 1: ACCUEIL / CATALOGUE -->
+        <section id="pageAccueil" class="space-y-4">
+            <div class="text-center py-2">
+                <h2 class="text-lg font-bold text-amber-400">Catalogue des Equipements</h2>
+                <p class="text-xs text-slate-400">Choisissez vos produits et gérez vos profits</p>
+            </div>
+
+            <!-- Produit 1: Mini iPhone 15 -->
+            <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 shadow-xl relative overflow-hidden">
+                <div class="flex items-center space-x-4">
+                    <div class="w-20 h-20 bg-slate-900 rounded-xl flex items-center justify-center border border-amber-500/20">
+                        <i class="fa-solid fa-mobile-screen text-4xl text-amber-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-white text-base">Mini iPhone 15</h3>
+                        <p class="text-xs text-amber-400 font-semibold">3 000 FCFA</p>
+                        <p class="text-xs text-slate-400 mt-1">Génération : 5 jours de retraits + 3 jours de grâce pour équiper le VIP 15 000 FCFA (Revenus à vie).</p>
+                        <p class="text-xs text-slate-500 mt-1">Limite : Max 2 unités par client</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-center pt-3 border-t border-slate-700">
+                    <span id="p1Count" class="text-xs text-slate-400">Possédé: 0 / 2</span>
+                    <button onclick="buyProduct(1)" class="px-4 py-2 gold-gradient text-slate-950 font-bold text-xs rounded-xl shadow-md hover:brightness-110 active:scale-95 transition">
+                        Posséder (3 000 FCFA)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Produit 2: Mini iPhone 15 Pro Max -->
+            <div class="bg-slate-800 rounded-2xl p-4 border border-amber-500/40 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-amber-500 text-slate-950 text-[10px] font-bold px-3 py-0.5 rounded-bl-lg">
+                    VIP PRO
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-20 h-20 bg-slate-900 rounded-xl flex items-center justify-center border border-amber-500/40">
+                        <i class="fa-solid fa-mobile-retro text-4xl text-amber-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-amber-400 text-base">Mini iPhone 15 Pro Max</h3>
+                        <p class="text-xs text-white font-semibold">15 000 FCFA</p>
+                        <p class="text-xs text-slate-300 mt-1">Cycle 7 jours (22 500 FCFA de profit) + Débloque les revenus à vie des équipements 3 000 FCFA.</p>
+                        <p class="text-xs text-slate-400 mt-1">Limite : Max 5 unités par client</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-center pt-3 border-t border-slate-700">
+                    <span id="p2Count" class="text-xs text-slate-400">Possédé: 0 / 5</span>
+                    <button onclick="buyProduct(2)" class="px-4 py-2 gold-gradient text-slate-950 font-bold text-xs rounded-xl shadow-md hover:brightness-110 active:scale-95 transition">
+                        Posséder (15 000 FCFA)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: PRODUITS EQUIPES -->
+        <section id="pageEquipes" class="hidden space-y-4">
+            <div class="text-center py-2">
+                <h2 class="text-lg font-bold text-amber-400">Vos Produits Équipés</h2>
+                <p class="text-xs text-slate-400">Suivi en direct de votre génération de revenus</p>
+            </div>
+
+            <!-- Cartes de Bonus -->
+            <div class="grid grid-cols-2 gap-3">
+                <div id="bonus30kCard" class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
+                    <p class="text-[11px] text-slate-400">Bonus 3 000 FCFA</p>
+                    <p class="text-sm font-bold text-amber-400">30 000 FCFA</p>
+                    <button id="btnBonus30k" onclick="claimBonus(1)" class="mt-2 w-full py-1 text-[10px] bg-slate-700 text-slate-400 rounded-lg font-bold" disabled>
+                        Non éligible
+                    </button>
+                </div>
+                <div id="bonus100kCard" class="bg-slate-800 p-3 rounded-xl border border-slate-700 text-center">
+                    <p class="text-[11px] text-slate-400">Bonus 15 000 FCFA</p>
+                    <p class="text-sm font-bold text-amber-400">100 000 FCFA</p>
+                    <button id="btnBonus100k" onclick="claimBonus(2)" class="mt-2 w-full py-1 text-[10px] bg-slate-700 text-slate-400 rounded-lg font-bold" disabled>
+                        Non éligible
+                    </button>
+                </div>
+            </div>
+
+            <!-- Liste des Équipements -->
+            <div id="equippedList" class="space-y-3">
+                <!-- Généré par JS -->
+            </div>
+        </section>
+
+        <!-- PAGE 3: DEPOT / RETRAIT -->
+        <section id="pageDepotRetrait" class="hidden space-y-4">
+            <div class="text-center py-2">
+                <h2 class="text-lg font-bold text-amber-400">Dépôt & Retrait Sécurisé</h2>
+                <p class="text-xs text-slate-400">Paiement Marchand PayDunya & Validation WhatsApp Banking</p>
+            </div>
+
+            <!-- Onglets Dépôt / Retrait -->
+            <div class="flex bg-slate-800 p-1 rounded-xl border border-slate-700">
+                <button id="tabDepotBtn" onclick="switchFinanceTab('depot')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-amber-500 text-slate-950">
+                    Dépôt (Ouvert 24h/7)
+                </button>
+                <button id="tabRetraitBtn" onclick="switchFinanceTab('retrait')" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-400">
+                    Retrait (15h00 - 06h00 GMT)
+                </button>
+            </div>
+
+            <!-- Section Dépôt -->
+            <div id="sectionDepot" class="bg-slate-800 p-4 rounded-2xl border border-slate-700 space-y-4">
+                <p class="text-xs text-slate-300">
+                    Effectuez votre dépôt via la caisse officielle <strong>PayDunya</strong>. Après votre paiement effectif, cliquez sur valider pour soumettre votre requête à l'administration.
+                </p>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Montant à déposer (FCFA)</label>
+                    <input type="number" id="depotAmount" min="3000" placeholder="Minimum 3 000 FCFA" value="3000"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <button onclick="openPaydunyaPortal()" class="w-full py-3 gold-gradient text-slate-950 font-bold text-sm rounded-xl shadow-lg">
+                    <i class="fa-solid fa-lock mr-2"></i> Procéder au Dépôt PayDunya
+                </button>
+            </div>
+
+            <!-- Section Retrait -->
+            <div id="sectionRetrait" class="hidden bg-slate-800 p-4 rounded-2xl border border-slate-700 space-y-4">
+                <div id="timeStatusBox" class="p-2.5 rounded-xl bg-slate-900 text-xs text-center font-semibold border border-slate-700">
+                    <!-- Statut Horaire GMT généré en JS -->
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Montant à retirer (FCFA)</label>
+                    <input type="number" id="retraitAmount" min="2000" placeholder="Minimum 2 000 FCFA"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Numéro de Réception (YasTogo / Flooz)</label>
+                    <input type="text" id="retraitPhone" placeholder="Ex: 90000000"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+                </div>
+
+                <button onclick="submitRetrait()" class="w-full py-3 gold-gradient text-slate-950 font-bold text-sm rounded-xl shadow-lg">
+                    <i class="fa-brands fa-whatsapp mr-2"></i> Envoyer la demande de retrait par WhatsApp
+                </button>
+            </div>
+
+            <!-- Historique des Transactions -->
+            <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700">
+                <h3 class="text-xs font-bold text-amber-400 mb-3"><i class="fa-solid fa-clock-rotate-left mr-1"></i> Historique des opérations</h3>
+                <div id="transactionHistory" class="space-y-2 text-xs text-slate-400">
+                    <p class="text-center py-2">Aucune transaction enregistrée.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: SERVICE CLIENT IA -->
+        <section id="pageServiceIA" class="hidden space-y-4">
+            <div class="text-center py-2">
+                <h2 class="text-lg font-bold text-amber-400">Service Client IA & Admin</h2>
+                <p class="text-xs text-slate-400">Assistance 24/7 et validation des requêtes</p>
+            </div>
+
+            <!-- Bouton Pro WhatsApp Admin (Verrouillé) -->
+            <div class="bg-slate-800 p-3 rounded-xl border border-amber-500/30 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-brands fa-whatsapp text-2xl text-emerald-400"></i>
+                    <div>
+                        <p class="text-xs font-bold text-white">Support WhatsApp Direct Admin</p>
+                        <p class="text-[10px] text-amber-400">Réservé aux Clients VIP (15 000 FCFA)</p>
+                    </div>
+                </div>
+                <button onclick="tryAccessWhatsappAdmin()" class="px-3 py-1.5 bg-slate-700 text-slate-300 text-xs font-bold rounded-lg border border-slate-600">
+                    <i class="fa-solid fa-lock text-amber-400 mr-1"></i> Débloquer
+                </button>
+            </div>
+
+            <!-- Chat IA -->
+            <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden flex flex-col h-[350px]">
+                <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-700 flex items-center space-x-2">
+                    <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span class="text-xs font-bold text-white">Assistant IA rasofranceT</span>
+                </div>
+                <div id="chatMessages" class="flex-1 p-3 overflow-y-auto space-y-3 text-xs">
+                    <div class="bg-slate-700/60 p-2.5 rounded-xl max-w-[80%] text-slate-200">
+                        Bonjour ! Je suis l'assistant intelligent rasofranceT. Comment puis-je vous aider aujourd'hui ?
+                    </div>
+                </div>
+                <div class="p-2 bg-slate-900 border-t border-slate-700 flex space-x-2">
+                    <input type="text" id="chatInput" placeholder="Posez votre question..."
+                        class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                    <button onclick="sendChatMessage()" class="px-4 gold-gradient text-slate-950 font-bold rounded-xl text-xs">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Navigation du Bas (4 Onglets) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-amber-500/30 px-2 py-2 z-50">
+        <div class="max-w-lg mx-auto flex justify-around">
+            <button onclick="showPage('Accueil')" id="navAccueil" class="flex flex-col items-center text-amber-400">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[10px] mt-0.5">Accueil</span>
+            </button>
+            <button onclick="showPage('Equipes')" id="navEquipes" class="flex flex-col items-center text-slate-400">
+                <i class="fa-solid fa-layer-group text-lg"></i>
+                <span class="text-[10px] mt-0.5">Produits Équipés</span>
+            </button>
+            <button onclick="showPage('DepotRetrait')" id="navDepotRetrait" class="flex flex-col items-center text-slate-400">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                <span class="text-[10px] mt-0.5">Dépôt / Retrait</span>
+            </button>
+            <button onclick="showPage('ServiceIA')" id="navServiceIA" class="flex flex-col items-center text-slate-400">
+                <i class="fa-solid fa-headset text-lg"></i>
+                <span class="text-[10px] mt-0.5">Support IA</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODAL DE VÉRIFICATION PAIEMENT PAYDUNYA -->
+    <div id="paydunyaModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex flex-col items-center justify-center p-4">
+        <div class="bg-slate-800 border border-amber-500/40 rounded-2xl p-5 w-full max-w-sm space-y-4 text-center">
+            <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-spinner animate-spin"></i>
+            </div>
+            <h3 class="text-sm font-bold text-amber-400">Validation Dépôt PayDunya</h3>
+            <p id="verificationText" class="text-xs text-slate-300">
+                Effectuez votre paiement sur la page PayDunya. Ensuite, cliquez sur valider pour soumettre votre transaction à l'administrateur.
+            </p>
+            <button onclick="confirmRealDeposit()" class="w-full py-2.5 gold-gradient text-slate-950 rounded-xl text-xs font-bold shadow">
+                J'ai payé : Soumettre à l'Admin
+            </button>
+            <button onclick="closePaydunyaModal()" class="w-full py-2 bg-slate-700 text-slate-300 rounded-xl text-xs font-bold">
+                Annuler
+            </button>
+        </div>
+    </div>
+
+    <!-- PANNEAU ADMINISTRATEUR PRIVÉ (ESPACE ADMIN RASO INTÉGRÉ) -->
+    <div id="adminModal" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col p-4 overflow-y-auto">
+        <div class="max-w-lg w-full bg-[#2a2a2a] border border-red-600 rounded-2xl p-4 space-y-4 my-auto mx-auto shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+                <h3 class="text-sm font-bold text-red-500"><i class="fa-solid fa-user-shield mr-2"></i> Espace Admin RASO - Gestion exclusive</h3>
+                <button onclick="closeAdminPortal()" class="text-slate-400 hover:text-white font-bold text-lg">&times;</button>
+            </div>
+            <p style="font-size: 11px; color: #aaa; text-align: center;">Accès confidentiel - Validation des transactions et gestion des clients</p>
+
+            <!-- Onglets Admin -->
+            <div class="flex bg-[#1a1a1a] p-1 rounded-xl border border-slate-700 text-xs">
+                <button onclick="switchAdminTab('demandes')" id="adminTabDemandes" class="flex-1 py-1.5 rounded-lg bg-red-600 text-white font-bold">Transactions</button>
+                <button onclick="switchAdminTab('clients')" id="adminTabClients" class="flex-1 py-1.5 rounded-lg text-slate-400 font-bold">Clients & Bannissement</button>
+            </div>
+
+            <!-- Section 1 : Demandes en attente -->
+            <div id="adminSectionDemandes" class="space-y-3 max-h-72 overflow-y-auto pr-1">
+                <div id="adminDemandesList" class="space-y-2">
+                    <p class="text-center text-xs text-slate-400 py-4">Aucune demande en attente.</p>
+                </div>
+            </div>
+
+            <!-- Section 2 : Gestion des clients (Bannissement) -->
+            <div id="adminSectionClients" class="hidden space-y-2 max-h-72 overflow-y-auto pr-1">
+                <div id="adminClientList" class="space-y-2">
+                    <!-- Rempli par JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIQUE JAVASCRIPT -->
+    <script>
+        const ADMIN_WHATSAPP_NUMBER = "22890000000"; // Mettez votre numéro WhatsApp Banking ici
+
+        let state = {
+            userId: 'raso_' + Math.floor(Math.random() * 899999 + 100000),
+            balance: 0,
+            activeProducts: [],
+            purchasedCounts: { 1: 0, 2: 0 },
+            claimedBonuses: { 1: false, 2: false },
+            transactions: [],
+            hasDiscoveredTax: false,
+            isBanned: false
+        };
+
+        let currentDepotAmount = 3000;
+
+        function registerOrUpdateGlobalClient(pendingTx = null) {
+            let allClients = JSON.parse(localStorage.getItem('rasofranceT_all_clients') || '{}');
+            let pendingRequests = JSON.parse(localStorage.getItem('rasofranceT_pending_tx') || '[]');
+
+            if (!allClients[state.userId]) {
+                allClients[state.userId] = { id: state.userId, balance: state.balance, isBanned: false };
+            } else {
+                allClients[state.userId].balance = state.balance;
+                allClients[state.userId].isBanned = false; 
+            }
+
+            if (pendingTx) {
+                pendingRequests.unshift(pendingTx);
+                localStorage.setItem('rasofranceT_pending_tx', JSON.stringify(pendingRequests));
+            }
+
+            localStorage.setItem('rasofranceT_all_clients', JSON.stringify(allClients));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('rasofranceT_state');
+            if (saved) {
+                try { state = Object.assign(state, JSON.parse(saved)); } catch(e){}
+            }
+
+            state.isBanned = false; 
+            registerOrUpdateGlobalClient();
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            const fullInviteLink = baseUrl + "?ref=" + state.userId;
+            document.getElementById('userInviteLinkDisplay').innerText = fullInviteLink;
+            updateUI();
+        }
+
+        function saveState() {
+            state.isBanned = false;
+            localStorage.setItem('rasofranceT_state', JSON.stringify(state));
+            registerOrUpdateGlobalClient();
+            updateUI();
+        }
+
+        function showPage(pageName) {
+            ['Accueil', 'Equipes', 'DepotRetrait', 'ServiceIA'].forEach(p => {
+                document.getElementById('page' + p).classList.add('hidden');
+                document.getElementById('nav' + p).className = "flex flex-col items-center text-slate-400";
+            });
+            document.getElementById('page' + pageName).classList.remove('hidden');
+            document.getElementById('nav' + pageName).className = "flex flex-col items-center text-amber-400";
+        }
+
+        function getInviteText() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            return "Rejoins rasofranceT, investis dans des équipements high-tech et génère des revenus chaque jour ! Inscris-toi ici : " + baseUrl + "?ref=" + state.userId;
+        }
+
+        function copyInviteLink() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const fullInviteLink = baseUrl + "?ref=" + state.userId;
+            navigator.clipboard.writeText(fullInviteLink).then(() => {
+                alert("Lien de parrainage copié avec succès !");
+            });
+        }
+
+        function shareViaWhatsapp() {
+            const text = encodeURIComponent(getInviteText());
+            window.open("https://api.whatsapp.com/send?text=" + text, "_blank");
+        }
+
+        function shareViaFacebook() {
+            const baseUrl = encodeURIComponent(window.location.origin + window.location.pathname + "?ref=" + state.userId);
+            window.open("https://www.facebook.com/sharer/sharer.php?u=" + baseUrl, "_blank");
+        }
+
+        function buyProduct(prodId) {
+            if (prodId === 1) {
+                if (state.purchasedCounts[1] >= 2) {
+                    alert("Limite atteinte : Vous ne pouvez acheter que 2 unités du Mini iPhone 15.");
+                    return;
+                }
+                if (state.balance < 3000) {
+                    alert("Solde insuffisant ! Veuillez effectuer un dépôt pour continuer.");
+                    showPage('DepotRetrait');
+                    return;
+                }
+                state.balance -= 3000;
+                state.purchasedCounts[1]++;
+                state.activeProducts.push({
+                    id: Date.now(),
+                    type: 1,
+                    name: "Mini iPhone 15",
+                    cost: 3000,
+                    purchaseTime: Date.now(),
+                    lastHarvest: Date.now(),
+                    hourlyRate: 37.5,
+                    status: 'active'
+                });
+                alert("Félicitations ! Mini iPhone 15 acheté et équipé avec succès.");
+            } else if (prodId === 2) {
+                if (state.purchasedCounts[2] >= 5) {
+                    alert("Limite atteinte : Vous ne pouvez acheter que 5 unités du Mini iPhone 15 Pro Max.");
+                    return;
+                }
+                if (state.balance < 15000) {
+                    alert("Solde insuffisant ! Veuillez effectuer un dépôt pour continuer.");
+                    showPage('DepotRetrait');
+                    return;
+                }
+                state.balance -= 15000;
+                state.purchasedCounts[2]++;
+                state.activeProducts.push({
+                    id: Date.now(),
+                    type: 2,
+                    name: "Mini iPhone 15 Pro Max",
+                    cost: 15000,
+                    purchaseTime: Date.now(),
+                    lastHarvest: Date.now(),
+                    hourlyRate: 133.92,
+                    status: 'active'
+                });
+                alert("Félicitations ! Mini iPhone 15 Pro Max VIP équipé avec succès.");
+            }
+            saveState();
+        }
+
+        function
